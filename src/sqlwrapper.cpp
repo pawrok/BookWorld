@@ -25,6 +25,7 @@ int sqlwrapper::SqlExec(const char* sql) {
 	    sqlite3_free(zErrMsg);
         printf("error: %s", sqlite3_errmsg(db_));
 	}
+    std::cout << "SqlExec rc: " << rc << "\n";
     return rc;
 }
 
@@ -32,23 +33,27 @@ int sqlwrapper::StrFromSql(const char *sql, std::string &result, int col = 0) {
     sqlite3_stmt *stmt;
     int rc = sqlite3_prepare_v2(db_, sql, -1, &stmt, nullptr);
     if (rc == SQLITE_OK) {
-        /* code */
+        while ((rc = sqlite3_step(stmt) == SQLITE_ROW)) {
+            result.append(str(boost::format("id: %s, name: %s\n") 
+                                            % sqlite3_column_text(stmt, 0)
+                                            % sqlite3_column_text(stmt, 1)));
+        }
+        if (rc == SQLITE_DONE) {
+            return sqlite3_finalize(stmt);
+        } else {
+            printf("error: ", sqlite3_errmsg(db_));
+            return 0;
+        }
+    } else {
+        std::cout << "StrFromSql fail!\n";
+        return 0;
     }
-    while ((rc = sqlite3_step(stmt) == SQLITE_ROW)) {
-        result.append(str(boost::format("id: %s, name: %s\n") 
-                                        % sqlite3_column_text(stmt, 0) 
-                                        % sqlite3_column_text(stmt, 1)));
-    }
-    if (rc != SQLITE_DONE) {
-        printf("error: ", sqlite3_errmsg(db_));
-    }
-    return sqlite3_finalize(stmt);
 }
 
 int sqlwrapper::InitTables() {
     const char *sql =
         " CREATE TABLE if not exists BookTable ( " 
-        "    id INTEGER, "
+        "    id INTEGER PRIMARY KEY, "
         "    title TEXT, "
         "    author TEXT, "
         "    category TEXT, "
@@ -64,7 +69,7 @@ int sqlwrapper::InitTables() {
         "    tags TEXT "
         " );"
         " CREATE TABLE if not exists UserTable ( " 
-        "    email TEXT, "
+        "    email TEXT PRIMARY KEY, "
         "    name TEXT, "
         "    hashpass TEXT, "
         "    books TEXT "
@@ -74,42 +79,48 @@ int sqlwrapper::InitTables() {
 
 int sqlwrapper::Add(Book b) {
     std::string values = str(boost::format(
-                            "%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s")
-                            % b.id % b.title % b.author % b.category % b.rating 
-                            % b.rentper % b.datecomp % b.pages % b.read % b.image 
-                            % b.fav % b.desc % b.shelves % b.tags);
+        "%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s")
+        % b.id % b.title % b.author % b.category % b.rating 
+        % b.rentper % b.datecomp % b.pages % b.read % b.image 
+        % b.fav % b.desc % b.shelves % b.tags);
     
-    std::string sql = str(boost::format("INSERT INTO UserTable VALUES (%s);") % values); 
-    return SqlExec(sql.c_str());
-}
-
-int sqlwrapper::Add(User u) {
-    std::string sql = str(boost::format("INSERT INTO UserTable VALUES (\'%s\', \'%s\', \'%s\', \'%s\');")
-                                        % u.email % u.name % u.hashpass % u.books);
+    std::string sql = str(boost::format(
+        "INSERT INTO BookTable VALUES (%s);") % values);
     std::cout << sql << "\n";
     return SqlExec(sql.c_str());
 }
 
+int sqlwrapper::Add(User u) {
+    std::string sql = str(boost::format(
+        "INSERT INTO UserTable VALUES (\'%s\', \'%s\', \'%s\', \'%s\');")
+        % u.email % u.name % u.hashpass % u.books);
+    std::cout << sql << "\n";
+    return SqlExec(sql.c_str());
+}
 
 int sqlwrapper::Delete(Book b) {
-    std::string sql = str(boost::format("DELETE FROM BookTable where id = %s;") % b.id);
+    std::string sql = str(boost::format(
+        "DELETE FROM BookTable where id = %s;") % b.id);
     return SqlExec(sql.c_str());
 }
 
 int sqlwrapper::Delete(User u) {
-    std::string sql = str(boost::format("DELETE FROM UserTable where email = %s;") % u.email);
+    std::string sql = str(boost::format(
+        "DELETE FROM UserTable where email = %s;") % u.email);
     return SqlExec(sql.c_str());
 }
 
 int sqlwrapper::LinkBookToUser(std::string userid, std::string bookid) {
-    std::string sql = str(boost::format("SELECT books FROM UserTable where id = %s;") % userid);
+    std::string sql = str(boost::format(
+        "SELECT books FROM UserTable where id = %s;") % userid);
     std::string books;
     StrFromSql(sql.c_str(), books);
     books.append(bookid + ",");
-    std::string sql2 = str(boost::format("INSERT INTO UserTable(books) VALUES (%s) \
-                                          ON CONFLICT(books) DO UPDATE SET books=excluded.books;") % books);
+    std::string sql2 = str(boost::format(
+        "INSERT INTO UserTable(books) VALUES (%s) \
+         ON CONFLICT(books) DO UPDATE SET books=excluded.books;") % books);
 
-    int rc = SqlExec(sql2.c_str());
+    return SqlExec(sql2.c_str());
 }
 
 std::string sqlwrapper::GetAllUsers() {
@@ -126,5 +137,3 @@ std::string sqlwrapper::GetAllUsers() {
 //      fix ids in tables (they're not needed)
 //      change StrFromSql() to return str
 //      add logging system
-//      learn simple debugging
-//      move all 3rd party to one folder

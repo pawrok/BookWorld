@@ -1,4 +1,4 @@
-#include "sqlite3.h"
+#include <sqlite3.h>
 
 #include <string>
 
@@ -7,30 +7,23 @@ const std::string BOOKTABLE = "BookTable";
 const std::string USERTABLE = "UserTable";
 
 struct Book {
-    std::string id;
-    std::string title;
-    std::string author;
-    std::string category;
-    std::string rating;
-    std::string rentper;
-    std::string datecomp;
-    std::string pages;
-    std::string read;
-    std::string image;
-    std::string fav;
-    std::string desc;
-    std::string shelves;
-    std::string tags;
+    std::string id, title, author, category, rating,
+                rentper, datecomp, pages, read, image,
+                fav, desc, shelves, tags;
+
+    int validate() {
+        // TODO: more validation?
+        return 1;
+    }
 };
 
 struct User {
-    std::string email;
-    std::string name;
-    std::string hashpass;
-    std::string books;
+    std::string email, name, hashpass, books;
 
     int validate() {
+        // TODO: more validation?
         int valid=0;
+
         /* email */
         auto b=email.begin(), e=email.end();
         if ((b=std::find(b, e, '@')) != e && std::find(b, e, '.') != e )
@@ -48,16 +41,19 @@ public:
 	sqlwrapper();
 	~sqlwrapper();
 
+	int InitTables();
 	int Add(Book b);
 	int Add(User u);
 	int Delete(Book b);
 	int Delete(User u);
-	int InitTables();
     int StrFromSql(const char *sql, std::string &result, int col);
     int LinkBookToUser(std::string userid, std::string bookid);
-	int Edit();
+	int EditUser(std::string email, User u);
 	int GetUserBooks(std::string userid);
+
+    /* For testing purposes */
     std::string GetAllUsers();
+    std::string GetAllBooks();
 
 private:
     int SqlExec(const char* sql);
