@@ -1,5 +1,6 @@
-override CXXFLAGS += -lpthread -Wpedantic -Wall -Wextra -Wsign-conversion -Wconversion -std=c++2a -I3rd_party/uWebSockets/src -I3rd_party/uWebSockets/uSockets/src -I3rd_party/boost_1_77_0
-override LDFLAGS += build/*.o uWebSockets/uSockets/*.o -lz -lssl -lcrypto -Llibs
+override CXXFLAGS += -lpthread -Wpedantic -Wall -Wextra -Wsign-conversion -Wconversion -std=c++2a
+override CXXFLAGS += -I3rd_party/uWebSockets/src -I3rd_party/uWebSockets/uSockets/src -isystem 3rd_party/boost_1_77_0 -isystem 3rd_party/sqlite3
+override LDFLAGS += build/*.o 3rd_party/uWebSockets/uSockets/*.o -lz -lssl -lcrypto -Llibs
 
 # -> uWebSockets <-
 
