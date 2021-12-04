@@ -1,5 +1,12 @@
-override CXXFLAGS += -lpthread -Wpedantic -Wall -Wextra -Wsign-conversion -Wconversion -std=c++2a
-override CXXFLAGS += -I3rd_party/uWebSockets/src -I3rd_party/uWebSockets/uSockets/src -isystem 3rd_party/boost_1_77_0 -isystem 3rd_party/sqlite3
+override CXXFLAGS += -pthread -Wpedantic -Wall -Wextra -Wsign-conversion -Wconversion -std=c++2a
+
+# 3rd_party library includes
+override CXXFLAGS += -I3rd_party/uWebSockets/src 
+override CXXFLAGS += -I3rd_party/uWebSockets/uSockets/src 
+# override CXXFLAGS += -isystem 3rd_party/boost_1_77_0 
+override CXXFLAGS += -isystem 3rd_party/sqlite3
+override CXXFLAGS += -isystem 3rd_party/spdlog/include
+
 override LDFLAGS += build/*.o 3rd_party/uWebSockets/uSockets/*.o -lz -lssl -lcrypto -Llibs
 
 # -> uWebSockets <-
@@ -16,15 +23,21 @@ all: BookWorld
 DEP_OBJS: 3rd_party/uWebSockets/uSockets/socket.o build/sqlite3.o
 
 build/sqlite3.o:
-	$(CC) -o build/sqlite3.o -c 3rd_party/sqlite3/sqlite3.c -Wall -lpthread -ldl -lm -g
+	gcc -DSQLITE_THREADSAFE=0 -DSQLITE_OMIT_LOAD_EXTENSION -c 3rd_party/sqlite3/sqlite3.c -o build/sqlite3.o
 
 export WITH_OPENSSL = 1
 3rd_party/uWebSockets/uSockets/socket.o:
 	$(MAKE) -C 3rd_party/uWebSockets/uSockets
 
-BookWorld: DEP_OBJS
-	$(CXX) $(CXXFLAGS) -ldl -lm -g $(LDFLAGS) src/*.cpp -o BookWorld 
+SRC_DIR = ./src
+.PHONY: CPP_FILES
+CPP_FILES:
+	@for f in $(shell ls ${SRC_DIR} | grep .cpp); do \
+		$(CXX) $(CXXFLAGS) -c ${SRC_DIR}/$${f} -o build/$${f}.o; \
+	done
+
+BookWorld: DEP_OBJS CPP_FILES
+	$(CXX) $(CXXFLAGS) $(LDFLAGS) -o BookWorld
 
 clean:
 	rm -f build/*.o
-	rm -f 3rd_party/uWebSockets/uSockets/*.o
