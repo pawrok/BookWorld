@@ -10,6 +10,7 @@
 #include <openssl/crypto.h>
 
 #include "spdlog/spdlog.h"
+
 #define log spdlog
 
 #ifndef COMMON_H
@@ -23,6 +24,8 @@ std::string GetToken(std::string& s, std::string_view delimeter);
 std::string ReturnFile(const char* path);
 int ValidateIsbn(std::string& isbn);
 std::string GenFakeIsbn();
+std::string GenerateRandomString();
+
 
 /* Types of object stored in database. */
 typedef enum {

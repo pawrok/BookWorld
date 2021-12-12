@@ -173,3 +173,4 @@ SQLWrapper::~SQLWrapper() {
 // TODO: 
 //      adding books to user
 //      getting user's books with details
+//      auth tokens

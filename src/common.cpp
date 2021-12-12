@@ -1,5 +1,8 @@
 #include "common.h"
 
+#include "openssl/rand.h"
+#include "openssl/err.h"
+
 void UrlDecode(std::string& dst, const char *src) {
 	int hex1, hex2;
 	while (*src) {
@@ -40,19 +43,21 @@ int ValidateIsbn(std::string& isbn) {
 	std::vector<int> digits;
 	for (auto &i : isbn) {
 		if (i >= 48 && i <= 57)
-			digits.push_back(int(i));
+			digits.push_back(int(i) - '0');
 	}
-	
+
 	/* 13 digit isbn */
 	if (digits.size() == 13) {
 		long sum = 0;
+		int i = 1;
 		for (auto &d : digits) {
-			if (d % 2 == 0)
+			if (i % 2 == 0)
 				sum += d * 3;
 			else
 				sum += d;
+			i++;
 		}
-		if (sum / 10 == 0)
+		if (sum % 10 == 0)
 			return OK;
 		else return NOT_VALID;
 	}
@@ -74,5 +79,23 @@ int ValidateIsbn(std::string& isbn) {
 std::string GenFakeIsbn() {
 	/* generate 14 digit random number */
 	srand(time(NULL));
-	return std::to_string(rand() % 10^14);
+	long long r1 = rand();
+	long long r2 = rand();
+	long long max = pow(10, 14);
+	return std::to_string((r1 * r2) % max);
+}
+
+
+std::string GenerateRandomString() {
+	unsigned char buffer[128];
+
+	int rc = RAND_bytes(buffer, sizeof(buffer));
+	unsigned long err = ERR_get_error();
+
+	if(rc != 1) {
+		/* RAND_bytes failed */
+		/* `err` is valid    */
+	} else {
+		return std::string(reinterpret_cast<char*>(buffer));
+	}
 }
