@@ -99,9 +99,18 @@
         color: white;
     }
     .banner {
-        max-width: 100%;
-        max-height: 400px;
+        position: relative;
 
+    }
+    .text_layer {
+        position: absolute;
+        bottom: 20px;
+        right: 20px;
+        background-color: black;
+        color: white;
+        padding-left: 20px;
+        padding-right: 20px;
+      
     }
 
     }   
@@ -122,13 +131,16 @@
     <a href="#aboutus">About Us</a>
     </nav>
   </div>
-    <div class="buttons_top" align="right"> 
+    <div class="buttons_top" style="text-align:right"> 
         <button type="submit">Create library</button>
         <button type="submit">Login</button>
     </div> 
 </div> 
 <div class="banner">
-    <img src="banner.png" align="center">
+    <img src="banner.png" style="width:100%">
+    <div class="text_layer">
+        <p>FREE library for your books <br>for desktop and mobile devices<p>
+    </div>
 </div>
 
 <script>
