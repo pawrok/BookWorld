@@ -34,8 +34,10 @@ int SQLWrapper::Validate(DataObject& /* obj */, SQLTable type) {
 std::string SQLWrapper::GetValues(DataObject& obj) {
     std::string result;
     for (auto &&i : obj.properties) {
-        result.append(i.first + ":" + i.second + "\n");
+        result.append("\"" + i.second + "\"" + ",");
     }
+    result.pop_back();
+    log::debug("GetValues method, result is :'{}'", result);
     return result;
 }
 

@@ -21,6 +21,7 @@ int main(int argc, char **argv) {
 	SQLWrapper *SQL = new SQLWrapper;
 
 	uWS::SSLApp app = uWS::SSLApp({
+		//TODO: use absolute path
 	  .key_file_name = "misc/key.pem",
 	  .cert_file_name = "misc/cert.pem",
 	  .passphrase = argv[1]

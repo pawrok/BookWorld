@@ -33,13 +33,13 @@ typedef enum {
 } SQLTable;
 
 static std::map<SQLTable, std::string> table_name = {
-	{BOOK, "Books"},
-	{USER, "Users"}
+	{BOOK, "BookTable"},
+	{USER, "UserTable"}
 };
 
 static std::map<SQLTable, std::vector<std::string>> table_values = {
 	{BOOK, {"isbn", "title", "author", "category", "image", "desc", "pages"}},
-	{USER, {"email", "name", "pass"}},
+	{USER, {"email=", "name=", "pass="}},
 	{USERBOOKS, {"isbn", "title", "author", "category", "image", "desc", "pages"}}
 };
 
