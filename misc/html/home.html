@@ -20,43 +20,146 @@
     <a href="#contact">Contact</a>
     <div class="search-container">
         <form action="#">
-            <button type="submit">Login</button>
-            <button type="submit">Register</button>
+            <button type="button" class="btn" style="background-color: orange;" data-bs-toggle="modal" data-bs-target="#loginModal">Login</button>
+            <button type="button" class="btn" data-bs-toggle="modal" data-bs-target="#registerModal">Register</button>
         </form>
     </div>
 </div> 
 
-<div class="banner" style="background-color: gray;">
-    
+
+<div class="banner" style="background-color: gray; background-image: url('banner.png');">
+    <div class="banner-text">
+        <h3>FREE library for your books</h3>
+        <h4 style="padding-bottom: 10px;">for desktop and mobile devices</h4>
+        <button type="button" class="btn btn-primary">Create library</button>
+        <button type="button" class="btn btn-secondary">View plans</button>
+    </div>
 </div>
 
-<div class="container">
+<div class="container mt-3">
     <div class="row">
         <div class="col-lg-3 col-md-6 mt-3">
             <div class="box">
-                <p>Access and manage all of<br> your books in one place</p>
+                <svg xmlns="http://www.w3.org/2000/svg" width="46" height="46" fill="currentColor" class="bi bi-book" viewBox="0 0 16 16">
+                    <path d="M1 2.828c.885-.37 2.154-.769 3.388-.893 1.33-.134 2.458.063 3.112.752v9.746c-.935-.53-2.12-.603-3.213-.493-1.18.12-2.37.461-3.287.811V2.828zm7.5-.141c.654-.689 1.782-.886 3.112-.752 1.234.124 2.503.523 3.388.893v9.923c-.918-.35-2.107-.692-3.287-.81-1.094-.111-2.278-.039-3.213.492V2.687zM8 1.783C7.015.936 5.587.81 4.287.94c-1.514.153-3.042.672-3.994 1.105A.5.5 0 0 0 0 2.5v11a.5.5 0 0 0 .707.455c.882-.4 2.303-.881 3.68-1.02 1.409-.142 2.59.087 3.223.877a.5.5 0 0 0 .78 0c.633-.79 1.814-1.019 3.222-.877 1.378.139 2.8.62 3.681 1.02A.5.5 0 0 0 16 13.5v-11a.5.5 0 0 0-.293-.455c-.952-.433-2.48-.952-3.994-1.105C10.413.809 8.985.936 8 1.783z"/>
+                  </svg>
+                <p style="padding: 15px;">Access and manage all of<br> your books in one place</p>
             </div>
         </div>   
         <div class="col-lg-3 col-md-6 mt-3">
             <div class="box">
-                <p>Easily add books to your<br>library using ISBN</p>
+                <svg xmlns="http://www.w3.org/2000/svg" width="46" height="46" fill="currentColor" class="bi bi-upc-scan" viewBox="0 0 16 16">
+                    <path d="M1.5 1a.5.5 0 0 0-.5.5v3a.5.5 0 0 1-1 0v-3A1.5 1.5 0 0 1 1.5 0h3a.5.5 0 0 1 0 1h-3zM11 .5a.5.5 0 0 1 .5-.5h3A1.5 1.5 0 0 1 16 1.5v3a.5.5 0 0 1-1 0v-3a.5.5 0 0 0-.5-.5h-3a.5.5 0 0 1-.5-.5zM.5 11a.5.5 0 0 1 .5.5v3a.5.5 0 0 0 .5.5h3a.5.5 0 0 1 0 1h-3A1.5 1.5 0 0 1 0 14.5v-3a.5.5 0 0 1 .5-.5zm15 0a.5.5 0 0 1 .5.5v3a1.5 1.5 0 0 1-1.5 1.5h-3a.5.5 0 0 1 0-1h3a.5.5 0 0 0 .5-.5v-3a.5.5 0 0 1 .5-.5zM3 4.5a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0v-7zm2 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0v-7zm2 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0v-7zm2 0a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v7a.5.5 0 0 1-.5.5h-1a.5.5 0 0 1-.5-.5v-7zm3 0a.5.5 0 0 1 1 0v7a.5.5 0 0 1-1 0v-7z"/>
+                  </svg>
+                <p style="padding: 15px;">Easily add books to your<br>library using ISBN</p>
             </div>       
         </div>
         <div class="col-lg-3 col-md-6 mt-3">
             <div class="box">
-                <p>Share your collection with friends<br>and compare</p>
+                <svg xmlns="http://www.w3.org/2000/svg" width="46" height="46" fill="currentColor" class="bi bi-person-workspace" viewBox="0 0 16 16">
+                    <path d="M4 16s-1 0-1-1 1-4 5-4 5 3 5 4-1 1-1 1H4Zm4-5.95a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5Z"/>
+                    <path d="M2 1a2 2 0 0 0-2 2v9.5A1.5 1.5 0 0 0 1.5 14h.653a5.373 5.373 0 0 1 1.066-2H1V3a1 1 0 0 1 1-1h12a1 1 0 0 1 1 1v9h-2.219c.554.654.89 1.373 1.066 2h.653a1.5 1.5 0 0 0 1.5-1.5V3a2 2 0 0 0-2-2H2Z"/>
+                  </svg>
+                <p style="padding: 15px;">Share your collection with <br>friends and compare</p>
             </div>       
         </div>
         <div class="col-lg-3 col-md-6 mt-3">
             <div class="box">
-                <p>Monitor your reading progress<br>and review stats</p>
+                <svg xmlns="http://www.w3.org/2000/svg" width="46" height="46" fill="currentColor" class="bi bi-graph-up-arrow" viewBox="0 0 16 16">
+                    <path fill-rule="evenodd" d="M0 0h1v15h15v1H0V0Zm10 3.5a.5.5 0 0 1 .5-.5h4a.5.5 0 0 1 .5.5v4a.5.5 0 0 1-1 0V4.9l-3.613 4.417a.5.5 0 0 1-.74.037L7.06 6.767l-3.656 5.027a.5.5 0 0 1-.808-.588l4-5.5a.5.5 0 0 1 .758-.06l2.609 2.61L13.445 4H10.5a.5.5 0 0 1-.5-.5Z"/>
+                  </svg>
+                <p style="padding: 15px;">Monitor your reading progress<br>and review stats</p>
             </div>       
         </div>
         
     </div>
 </div>
 
+<div class="container-fluid books mt-3">
+    <div class="row">
+        <h5 class="mt-3">Recently added books</h5>
+    </div>
+</div>
 
+<div class="container-fluid featured mt-3">
+    <div class="row">
+        <h5 class="mb-4">Today's featured library</h5>
+    </div>
+    <div class="row">
+        <div class="col-lg-4 col-md-8 justify-content-center">
+            <img src="profile_image.JPG" style="height:50%;"/>
+            
+            <p style="text-align: center;"><b>Alex</b></p>
+            <p>395 books in library</p>
+            <button type="button" class="btn btn-primary">Go to library</button>
+        </div>
+        <div class="col-lg-8 col-md-8 mt-3" >
+            <p style="text-align:left">I have been reading since my early years - books are a whole new world to me.<br>
+            My top rated ones include books by C.S Lewis, Athur C. Clarke and Orson Scott Card.<br>
+            I am open to meet friends with similar interestes and true books lovers to read books<br>
+            and have interesting discussions.
+        </p>
+        <p style="text-align:left"><b>Top rated books</b></p>
+    
+        </div>
+    </div>
+</div>
+
+<div class="containter mt-5">
+    <div class="row">
+<footer class="py-5" style="background-color: gray;">
+    <div class="row" style="margin-left:10px">
+      <div class="col-2">
+        <h5 style="color:white">Offering</h5>
+        <ul class="nav flex-column">
+          <li class="nav-item mb-2"><a href="#" class="nav-link p-0" style="color:white">Home</a></li>
+          <li class="nav-item mb-2"><a href="#" class="nav-link p-0" style="color:white">Features</a></li>
+          <li class="nav-item mb-2"><a href="#" class="nav-link p-0" style="color:white">Libraries</a></li>
+          <li class="nav-item mb-2"><a href="#" class="nav-link p-0" style="color:white">Price</a></li>
+        </ul>
+      </div>
+
+      <div class="col-2">
+        <h5 style="color:white">Support</h5>
+        <ul class="nav flex-column">
+            <li class="nav-item mb-2"><a href="#" class="nav-link p-0" style="color:white">Help</a></li>
+            <li class="nav-item mb-2"><a href="#" class="nav-link p-0" style="color:white">FAQs</a></li>
+        </ul>
+      </div>
+
+      <div class="col-2">
+        <h5 style="color:white">Connect</h5>
+        <ul class="nav flex-column">
+            <li class="nav-item mb-2"><a href="#" class="nav-link p-0" style="color:white">About us</a></li>
+      
+        </ul>
+      </div>
+
+      <div class="col-4 offset-1">
+        <form>
+          <h5 style="color:white">Subscribe to our newsletter</h5>
+          <p style="color:white">Monthly digest of whats new and exciting from us.</p>
+          <div class="d-flex w-100 gap-2">
+            <label for="newsletter1" class="visually-hidden">Email address</label>
+            <input id="newsletter1" type="text" class="form-control" placeholder="Email address">
+            <button class="btn btn-primary" type="button">Subscribe</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <div class="d-flex justify-content-between py-4 my-4" style="margin-left:10px; color: white;">
+      <p>© 2022 BookByBook, All rights reserved.</p>
+      <ul class="list-unstyled d-flex">
+        <li class="ms-3"><a class="link-dark" href="#"><svg class="bi" width="24" height="24"><use xlink:href="#twitter"></use></svg></a></li>
+        <li class="ms-3"><a class="link-dark" href="#"><svg class="bi" width="24" height="24"><use xlink:href="#instagram"></use></svg></a></li>
+        <li class="ms-3"><a class="link-dark" href="#"><svg class="bi" width="24" height="24"><use xlink:href="#facebook"></use></svg></a></li>
+      </ul>
+    </div>
+  </footer>
+
+</div>
+</div>
 
 </body>
 </html>
