@@ -25,7 +25,7 @@ std::string ReturnFile(const char* path);
 int ValidateIsbn(std::string& isbn);
 std::string GenFakeIsbn();
 std::string GenerateRandomString();
-
+std::string GetHostIp();
 
 /* Types of object stored in database. */
 typedef enum {

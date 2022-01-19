@@ -22,6 +22,7 @@ public:
     int GetLastBookID();
 	int GetUserBooks(std::string_view user_email);
     int CreateUserTable(std::string_view user_email);
+    int CheckUser(DataObject user);
 
     // User GetUser(std::string_view ver_token);
 

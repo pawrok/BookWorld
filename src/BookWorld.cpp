@@ -4,9 +4,10 @@
 
 #define BOOTSTRAP_CSS "3rd_party/bootstrap-5.1.3/dist/css/bootstrap.min.css"
 #define CUSTOM_CSS "misc/html/grid.css"
+#define HTML_LOGIN "misc/html/login.html"
 #define HTML_INDEX "misc/html/index.html"
 #define PORT 3000
-#define LOCAL_ADDRESS "https://172.28.0.203"
+// #define LOCAL_ADDRESS "https://172.28.0.203"
 
 // struct us_listen_socket_t *globalListenSocket;
 
@@ -68,13 +69,28 @@ int main(int argc, char **argv) {
 		});
 		res->onAborted([](){});
 
-	}).post("/login", [](auto *res, auto */* req */) {
-		res->end(ReturnFile(HTML_INDEX));
+	}).get("/login", [](auto *res, auto */* req */) {
+		res->end(ReturnFile(HTML_LOGIN));
+		res->onAborted([](){});
+	
+	}).post("/login", [SQL](auto *res, auto *req) {
+		res->onData([res, req, SQL](std::string_view data, bool /* last */) mutable {
+			std::string buffer;
+			UrlDecode(buffer, data.data());
+
+			DataObject user(buffer, USER);
+
+			// check if email:pass match with that in SQL DB
+			// send succesful log in msg
+			// send auth token 
+
+			SQL->CheckUser(user);
+		});
 		res->onAborted([](){});
 
 	}).listen(PORT, [](auto *listen_socket) {
 	    if (listen_socket) {
-			log::info("Listening on {}:{}", LOCAL_ADDRESS, PORT);
+			log::info("Listening on https://{}:{}", GetHostIp(), PORT);
 			// globalListenSocket = listen_socket;
 	    }
 	});

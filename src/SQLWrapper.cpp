@@ -161,6 +161,11 @@ std::string SQLWrapper::GetAll(SQLTable type) {
     return GetFromSQL(sql.c_str());
 }
 
+int SQLWrapper::CheckUser(DataObject user) {
+    std::string sql = fmt::format("SELECT {} FROM {};", user.properties["email"], table_name[USER]);
+    log::debug("CheckUser ", GetFromSQL(sql.c_str()), "\n");
+}
+
 SQLWrapper::SQLWrapper() {
     if (sqlite3_open(DBNAME, &db_) == SQLITE_OK)
         InitTables();

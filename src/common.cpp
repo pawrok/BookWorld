@@ -3,6 +3,14 @@
 #include "openssl/rand.h"
 #include "openssl/err.h"
 
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <sys/ioctl.h>
+#include <netinet/in.h>
+#include <net/if.h>
+#include <unistd.h>
+#include <arpa/inet.h>
+
 void UrlDecode(std::string& dst, const char *src) {
 	int hex1, hex2;
 	while (*src) {
@@ -85,7 +93,6 @@ std::string GenFakeIsbn() {
 	return std::to_string((r1 * r2) % max);
 }
 
-
 std::string GenerateRandomString() {
 	unsigned char buffer[128];
 
@@ -98,4 +105,38 @@ std::string GenerateRandomString() {
 	} else {
 		return std::string(reinterpret_cast<char*>(buffer));
 	}
+}
+
+std::string GetHostIp() {
+	// char host[256];
+	// gethostname(host, 256);
+
+	// struct hostent *host_entry;
+	// host_entry = gethostbyname(host);
+
+	int fd;
+	struct ifreq ifr;
+	
+    // replace with your interface name
+    // or ask user to input
+    
+	char iface[] = "eth0";
+	
+	fd = socket(AF_INET, SOCK_DGRAM, 0);
+
+	//Type of address to retrieve - IPv4 IP address
+	ifr.ifr_addr.sa_family = AF_INET;
+
+	//Copy the interface name in the ifreq structure
+	strncpy(ifr.ifr_name , iface , IFNAMSIZ-1);
+
+	ioctl(fd, SIOCGIFADDR, &ifr);
+
+	close(fd);
+
+	//display result
+	printf("%s - %s\n" , iface , inet_ntoa(( (struct sockaddr_in *)&ifr.ifr_addr )->sin_addr) );
+
+	std::string result = inet_ntoa(( (struct sockaddr_in *)&ifr.ifr_addr )->sin_addr);
+	return result;
 }
