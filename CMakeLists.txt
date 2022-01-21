@@ -11,13 +11,12 @@ PROJECT("BookWorld")
 find_package(OpenSSL REQUIRED)
 find_package(ZLIB)
 
-
 add_executable(${PROJECT_NAME} src/BookWorld.cpp)
 add_subdirectory(src)
 
 ExternalProject_Add(
     uSockets
-    SOURCE_DIR ../3rd_party/uWebSockets/uSockets
+    SOURCE_DIR ${CMAKE_SOURCE_DIR}/3rd_party/uWebSockets/uSockets
     CONFIGURE_COMMAND ""
     BUILD_IN_SOURCE 1
     BUILD_COMMAND WITH_OPENSSL=1 make
@@ -26,37 +25,38 @@ ExternalProject_Add(
 
 ExternalProject_Add(
     sqlite3
-    SOURCE_DIR ../3rd_party/sqlite3
+    SOURCE_DIR ${CMAKE_SOURCE_DIR}/3rd_party/sqlite3
     CONFIGURE_COMMAND ""
     BUILD_IN_SOURCE 1
-    BUILD_COMMAND gcc -DSQLITE_THREADSAFE=0 -DSQLITE_OMIT_LOAD_EXTENSION -c sqlite3.c -o ../../build/sqlite3.o
+    BUILD_COMMAND gcc -DSQLITE_THREADSAFE=0 -DSQLITE_OMIT_LOAD_EXTENSION -c sqlite3.c -o ${CMAKE_SOURCE_DIR}/build/sqlite3.o
     INSTALL_COMMAND ""
 )
 
+# includes for building 'main .obj' - BookWorld.cpp.o
 target_include_directories(
     ${PROJECT_NAME}
     PUBLIC 
-        ${CMAKE_SOURCE_DIR}/src 
+        ${CMAKE_SOURCE_DIR}/src
         ${CMAKE_SOURCE_DIR}/3rd_party/uWebSockets/uSockets/src
         ${CMAKE_SOURCE_DIR}/3rd_party/uWebSockets/src
 )
 
+# build other files from 'src'
 target_include_directories(
     SRC
     PUBLIC 
         ${CMAKE_SOURCE_DIR}/3rd_party/spdlog/include
         ${CMAKE_SOURCE_DIR}/3rd_party/sqlite3
-        ${CMAKE_SOURCE_DIR}/3rd_party/fmt-8.0.1/include
+        ${CMAKE_SOURCE_DIR}/3rd_party/fmt/include
 )
 
+# link ???
 target_link_directories(
-    ${PROJECT_NAME} 
+    ${PROJECT_NAME}
     PRIVATE src
-    # PRIVATE ${CMAKE_SOURCE_DIR}/build
-    # PRIVATE ${CMAKE_SOURCE_DIR}/3rd_party/uWebSockets/uSockets
 )
 
-# target_link_directories(${PROJECT_NAME} PRIVATE 3rd_party/uWebSockets/uSockets)
+add_dependencies(${PROJECT_NAME} uSockets sqlite3)
 
 target_link_libraries(
     ${PROJECT_NAME}
