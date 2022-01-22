@@ -17,12 +17,14 @@ int main(int argc, char **argv) {
 		std::cout << "Provide password in argv... \n Closing program...\n";
 		return -1;
 	}
-	spdlog::set_level(spdlog::level::debug); // Set global log level to debug
+
+	log::set_level(spdlog::level::debug); // Set global log level to debug
 
 	SQLWrapper *SQL = new SQLWrapper;
 
 	uWS::SSLApp app = uWS::SSLApp({
-		//TODO: use absolute path
+	  // openssl req -x509 -newkey rsa:4096 -keyout key.pem -out cert.pem -sha256 -days 365
+	  //TODO: use absolute path
 	  .key_file_name = "misc/key.pem",
 	  .cert_file_name = "misc/cert.pem",
 	  .passphrase = argv[1]

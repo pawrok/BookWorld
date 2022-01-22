@@ -10,6 +10,7 @@
 #include <net/if.h>
 #include <unistd.h>
 #include <arpa/inet.h>
+#include <string.h>
 
 void UrlDecode(std::string& dst, const char *src) {
 	int hex1, hex2;
